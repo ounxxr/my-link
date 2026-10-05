@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, Share2, Mail, MapPin } from "lucide-react";
+import { Check, Share2, Mail, MapPin, Plus } from "lucide-react";
 import { UserProfile } from "@/types/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import AddLinkDialog from "./AddLinkDialog";
 
 interface ProfileHeaderProps {
   user: UserProfile;
@@ -112,6 +113,23 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
               <Share2 className="h-4 w-4 text-zinc-700" />
             )}
           </Button>
+
+          {/* 새 링크 추가 다이얼로그 트리거 */}
+          <AddLinkDialog
+            trigger={
+              <Button
+                variant="outline-pill"
+                size="sm"
+                className="gap-1.5 px-3 py-2 text-xs font-semibold cursor-pointer border-zinc-200 text-[#050038] hover:border-zinc-300 hover:bg-zinc-50"
+                type="button"
+                title="새 링크 추가"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">링크 추가</span>
+              </Button>
+            }
+            onSuccess={() => triggerToast("새 링크가 성공적으로 추가되었습니다! 🎉")}
+          />
 
           {/* Contact Me CTA 버튼 (shadcn Button variant="black-pill") */}
           <Button

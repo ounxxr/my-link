@@ -13,6 +13,8 @@ import {
   Layers,
   GitBranch,
   RefreshCw,
+  Plus,
+  Check,
 } from "lucide-react";
 import { useLinkStore } from "@/store/useLinkStore";
 import ProfileHeader from "./ProfileHeader";
@@ -20,6 +22,7 @@ import SocialBar from "./SocialBar";
 import CategoryTabs from "./CategoryTabs";
 import SectionHeader from "./SectionHeader";
 import LinkCard from "./LinkCard";
+import AddLinkDialog from "./AddLinkDialog";
 import { LinkBlock, HeaderBlock } from "@/types/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,6 +40,17 @@ export default function ProfileCard() {
     incrementClick,
     resetToMockData,
   } = useLinkStore();
+
+  const [showToast, setShowToast] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2400);
+  };
 
   // 카테고리별 링크 개수 집계
   const categoryCounts = useMemo(() => {
@@ -82,6 +96,21 @@ export default function ProfileCard() {
 
   return (
     <div className="relative w-full max-w-xl">
+      {/* Miro 스타일 토스트 노티피케이션 (Level 4 Depth) */}
+      <div
+        aria-live="polite"
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 pointer-events-none ${
+          showToast
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 translate-y-4 scale-95"
+        }`}
+      >
+        <div className="flex items-center gap-2.5 rounded-full bg-[#050038] px-4 py-2.5 text-xs font-medium text-white shadow-[0px_12px_24px_rgba(5,0,56,0.18)] border border-white/10">
+          <Check className="h-4 w-4 text-[#FFD02F]" />
+          <span>{toastMessage}</span>
+        </div>
+      </div>
+
       {/* 실시간 협업 커서 데코레이션 1: 이지윤 (소프트 바이올렛) */}
       <div className="pointer-events-none absolute -top-8 -left-2 z-20 hidden items-center gap-1 sm:flex animate-bounce [animation-duration:3s]">
         <MousePointer2 className="h-5 w-5 fill-[#8B5CF6] text-[#8B5CF6] stroke-[1.5]" />
@@ -116,6 +145,28 @@ export default function ProfileCard() {
           />
         )}
 
+        {/* 링크 목록 헤더 & 추가 버튼 액션 바 */}
+        <div className="px-6 pt-1 pb-2 sm:px-9 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="font-sans text-xs font-semibold uppercase tracking-wider text-zinc-700">
+              {selectedCategory === "all"
+                ? "전체 링크"
+                : categories?.find((c) => c.id === selectedCategory)?.label || "링크 목록"}
+            </span>
+            <Badge
+              variant="outline"
+              className="rounded-full border-zinc-200/90 bg-zinc-50 px-2 py-0 text-[10px] font-mono font-medium text-zinc-600"
+            >
+              {filteredBlocks.filter((b) => b.type === "link").length}개
+            </Badge>
+          </div>
+
+          <AddLinkDialog
+            defaultCategory={selectedCategory === "all" ? "projects" : selectedCategory}
+            onSuccess={() => triggerToast("새 링크가 성공적으로 추가되었습니다! 🎉")}
+          />
+        </div>
+
         {/* 4. 링크 블록 목록 컨텐츠 영역 */}
         <div className="px-6 pb-6 sm:px-9">
           {filteredBlocks.length === 0 ? (
@@ -123,15 +174,31 @@ export default function ProfileCard() {
               <p className="font-sans text-xs text-zinc-500">
                 선택한 카테고리에 표시할 링크가 없습니다.
               </p>
-              <Button
-                onClick={() => setSelectedCategory("all")}
-                variant="black-pill"
-                size="sm"
-                className="mt-2.5"
-                type="button"
-              >
-                전체 링크 보기
-              </Button>
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <Button
+                  onClick={() => setSelectedCategory("all")}
+                  variant="outline-pill"
+                  size="sm"
+                  type="button"
+                >
+                  전체 링크 보기
+                </Button>
+                <AddLinkDialog
+                  defaultCategory={selectedCategory === "all" ? "projects" : selectedCategory}
+                  onSuccess={() => triggerToast("새 링크가 성공적으로 추가되었습니다! 🎉")}
+                  trigger={
+                    <Button
+                      variant="black-pill"
+                      size="sm"
+                      className="gap-1.5 cursor-pointer"
+                      type="button"
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                      <span>이 카테고리에 링크 추가</span>
+                    </Button>
+                  }
+                />
+              </div>
             </div>
           ) : (
             <div className="space-y-3.5">
@@ -193,15 +260,21 @@ export default function ProfileCard() {
               >
                 <MousePointer2 className="h-3.5 w-3.5" />
               </Button>
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                className="size-7 rounded-full text-zinc-500 hover:bg-zinc-100"
-                title="Sticky Note"
-                type="button"
-              >
-                <StickyNote className="h-3.5 w-3.5" />
-              </Button>
+              <AddLinkDialog
+                defaultCategory="projects"
+                onSuccess={() => triggerToast("새 링크가 성공적으로 추가되었습니다! 🎉")}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    className="size-7 rounded-full text-zinc-500 hover:bg-zinc-100 hover:text-[#050038]"
+                    title="새 링크 추가 (포스트잇)"
+                    type="button"
+                  >
+                    <StickyNote className="h-3.5 w-3.5" />
+                  </Button>
+                }
+              />
               <Button
                 variant="ghost"
                 size="icon-xs"
@@ -233,7 +306,10 @@ export default function ProfileCard() {
 
             {/* 시연자용 Seed 데이터 리셋 버튼 (shadcn Button variant="icon-circle") */}
             <Button
-              onClick={resetToMockData}
+              onClick={() => {
+                resetToMockData();
+                triggerToast("초기 Mock 데이터셋으로 리셋되었습니다! 🔄");
+              }}
               variant="icon-circle"
               size="icon-sm"
               title="초기 Mock 데이터셋으로 리셋 (시연용)"
