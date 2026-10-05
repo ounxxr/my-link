@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#09090b",
+  themeColor: "#ffffff",
 };
 
 export const metadata: Metadata = {
@@ -30,6 +30,8 @@ export const metadata: Metadata = {
     "Next.js",
     "웹 개발자",
     "포트폴리오",
+    "MyLink",
+    "Visual Workspace",
   ],
   authors: [{ name: "이지윤", url: "https://github.com/ounxxr" }],
 };
@@ -42,9 +44,9 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-950 text-zinc-100 antialiased selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-white text-[#050038] antialiased selection:bg-[#E0E7FF] selection:text-[#3730A3]">
         {children}
       </body>
     </html>

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import {
   Mail,
-  ExternalLink,
   Copy,
   Check,
   Sparkles,
@@ -14,6 +13,12 @@ import {
   Palette,
   Terminal,
   GitBranch,
+  ArrowUpRight,
+  MousePointer2,
+  StickyNote,
+  PenTool,
+  Square,
+  Type,
 } from "lucide-react";
 
 // GitHub 공식 SVG 아이콘
@@ -34,22 +39,10 @@ function GithubIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
-interface LinkItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  url?: string;
-  icon: React.ReactNode;
-  badge?: string;
-  isCopyAction?: boolean;
-  copyValue?: string;
-}
-
 export default function ProfileCard() {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
 
-  // 기본 이메일 주소 (언제든 변경 가능)
   const emailAddress = "ounxxr@gmail.com";
 
   const handleCopyEmail = async () => {
@@ -80,263 +73,318 @@ export default function ProfileCard() {
     }
   };
 
-  const links: LinkItem[] = [
-    {
-      id: "github",
-      title: "GitHub",
-      subtitle: "github.com/ounxxr",
-      url: "https://github.com/ounxxr",
-      icon: <GithubIcon className="h-5 w-5 text-zinc-100" />,
-      badge: "Projects & Code",
-    },
-    {
-      id: "email",
-      title: "이메일 보내기",
-      subtitle: emailAddress,
-      isCopyAction: true,
-      copyValue: emailAddress,
-      icon: <Mail className="h-5 w-5 text-indigo-400" />,
-      badge: "원클릭 복사",
-    },
-    {
-      id: "blog",
-      title: "기술 블로그",
-      subtitle: "개발 지식과 트러블슈팅 아카이브",
-      url: "https://velog.io/@ounxxr",
-      icon: <BookOpen className="h-5 w-5 text-emerald-400" />,
-      badge: "Velog",
-    },
-    {
-      id: "portfolio",
-      title: "포트폴리오 & 프로젝트",
-      subtitle: "진행했던 주요 웹 프로젝트 모음",
-      url: "#",
-      icon: <Sparkles className="h-5 w-5 text-amber-400" />,
-      badge: "Showcase",
-    },
-  ];
-
   const techStack = [
-    { name: "React", icon: <Layers className="h-3.5 w-3.5 text-cyan-400" /> },
-    { name: "Next.js", icon: <Code2 className="h-3.5 w-3.5 text-white" /> },
-    { name: "TypeScript", icon: <Terminal className="h-3.5 w-3.5 text-blue-400" /> },
-    { name: "Tailwind CSS", icon: <Palette className="h-3.5 w-3.5 text-teal-400" /> },
-    { name: "JavaScript", icon: <Code2 className="h-3.5 w-3.5 text-yellow-400" /> },
-    { name: "Git", icon: <GitBranch className="h-3.5 w-3.5 text-orange-400" /> },
+    { name: "React", icon: <Layers className="h-3.5 w-3.5 text-sky-600" /> },
+    { name: "Next.js", icon: <Code2 className="h-3.5 w-3.5 text-zinc-900" /> },
+    { name: "TypeScript", icon: <Terminal className="h-3.5 w-3.5 text-blue-600" /> },
+    { name: "Tailwind CSS", icon: <Palette className="h-3.5 w-3.5 text-teal-600" /> },
+    { name: "JavaScript", icon: <Code2 className="h-3.5 w-3.5 text-amber-600" /> },
+    { name: "Git", icon: <GitBranch className="h-3.5 w-3.5 text-orange-600" /> },
   ];
 
   return (
-    <div className="relative w-full max-w-md">
-      {/* 바깥쪽 앰비언트 글로우 테두리 효과 */}
-      <div className="absolute -inset-0.5 rounded-[2.5rem] bg-gradient-to-b from-indigo-500/30 via-purple-500/20 to-pink-500/30 opacity-75 blur-xl transition-all duration-500" />
+    <div className="relative w-full max-w-2xl">
+      {/* 실시간 협업 커서 데코레이션 1: 이지윤 (소프트 바이올렛) */}
+      <div className="pointer-events-none absolute -top-8 -left-2 z-20 hidden items-center gap-1 sm:flex animate-bounce [animation-duration:3s]">
+        <MousePointer2 className="h-5 w-5 fill-[#8B5CF6] text-[#8B5CF6] stroke-[1.5]" />
+        <span className="rounded-full bg-[#8B5CF6] px-2.5 py-0.5 font-sans text-[11px] font-semibold text-white shadow-sm">
+          이지윤 ✦
+        </span>
+      </div>
 
-      {/* 메인 프로필 카드 */}
-      <main className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-zinc-900/60 p-0 text-zinc-100 shadow-2xl backdrop-blur-2xl transition-all duration-300">
+      {/* 실시간 협업 커서 데코레이션 2: 게스트 (소프트 블루) */}
+      <div className="pointer-events-none absolute -bottom-6 -right-2 z-20 hidden items-center gap-1 sm:flex animate-pulse">
+        <MousePointer2 className="h-4 w-4 fill-[#4262FF] text-[#4262FF] stroke-[1.5]" />
+        <span className="rounded-full bg-[#4262FF] px-2.5 py-0.5 font-sans text-[11px] font-semibold text-white shadow-sm">
+          Guest Viewing
+        </span>
+      </div>
+
+      {/* 메인 화이트보드 프레임 카드 */}
+      <main className="relative overflow-hidden rounded-[32px] border border-zinc-200/90 bg-white p-0 text-[#050038] shadow-[0px_12px_32px_-4px_rgba(5,0,56,0.08)]">
         
-        {/* 상단 커버 배너 아트 */}
-        <div className="relative h-32 w-full overflow-hidden bg-gradient-to-r from-violet-600/40 via-indigo-600/30 to-pink-500/40">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-400/20 via-transparent to-transparent" />
-          
-          {/* 공유 버튼 */}
-          <button
-            onClick={handleShare}
-            className="group absolute right-4 top-4 flex h-9 items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3.5 py-1.5 text-xs font-medium text-zinc-200 backdrop-blur-md transition-all hover:border-white/30 hover:bg-black/60 active:scale-95"
-            title="프로필 공유하기"
-            aria-label="프로필 공유"
-          >
-            {copiedShare ? (
-              <>
-                <Check className="h-3.5 w-3.5 text-emerald-400" />
-                <span className="text-emerald-400">링크 복사됨</span>
-              </>
-            ) : (
-              <>
-                <Share2 className="h-3.5 w-3.5 text-zinc-300 transition-transform group-hover:rotate-12" />
-                <span>공유</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* 프로필 정보 영역 */}
-        <div className="px-6 pb-8 pt-0 sm:px-8">
-          {/* 아바타 */}
-          <div className="relative -mt-16 mb-4 flex justify-center">
-            <div className="group relative">
-              {/* 아바타 글로우 링 */}
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 opacity-80 blur transition duration-300 group-hover:opacity-100" />
-              
-              <div className="relative flex h-28 w-28 items-center justify-center rounded-full border-4 border-zinc-950 bg-gradient-to-br from-zinc-800 to-zinc-900 text-3xl font-bold tracking-tight text-white shadow-xl">
-                <span className="bg-gradient-to-br from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent">
-                  지윤
-                </span>
-
-                {/* 상태 뱃지 (Open to work 펄스) */}
-                <div
-                  className="absolute bottom-1 right-1 flex items-center justify-center rounded-full border-2 border-zinc-950 bg-emerald-500 p-1 shadow"
-                  title="현재 협업 및 커피챗 환영"
-                >
-                  <span className="absolute h-3 w-3 animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative h-2 w-2 rounded-full bg-emerald-300" />
-                </div>
-              </div>
+        {/* 상단 내비게이션 바 */}
+        <header className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
+          <div className="flex items-center gap-3">
+            {/* 소프트 라벤더 워크마크 배지 */}
+            <div className="flex h-8 items-center justify-center rounded-lg border border-[#C7D2FE]/70 bg-[#EEF2FF] px-3 font-sans text-xs font-bold tracking-tight text-[#3730A3] shadow-xs">
+              MyLink
             </div>
+            <span className="hidden font-sans text-xs font-medium text-zinc-500 sm:inline-block">
+              / profile / jiyoon.workspace
+            </span>
           </div>
 
-          {/* 이름 & 신분 */}
-          <div className="text-center">
-            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-              이지윤
-              <span className="ml-2 text-sm font-normal text-zinc-400">
+          <div className="flex items-center gap-2">
+            {/* 상단 파스텔 민트 태그 칩 */}
+            <span className="hidden rounded-full border border-[#CEEAD6]/80 bg-[#E6F4EA] px-3 py-1 font-sans text-[11px] font-semibold text-[#137333] md:inline-block">
+              🟢 Available for Work
+            </span>
+
+            {/* 공유하기 원형 버튼 */}
+            <button
+              onClick={handleShare}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white text-[#050038] transition-colors hover:bg-zinc-50 active:bg-zinc-100"
+              title="프로필 링크 공유하기"
+            >
+              {copiedShare ? (
+                <Check className="h-4 w-4 text-emerald-600" />
+              ) : (
+                <Share2 className="h-4 w-4 text-zinc-700" />
+              )}
+            </button>
+
+            {/* 블랙 필 버튼 (Primary CTA) */}
+            <button
+              onClick={handleCopyEmail}
+              className="flex items-center gap-1.5 rounded-full bg-[#050038] px-4 py-2 font-sans text-xs font-medium text-white transition-all hover:bg-zinc-800 active:scale-95"
+            >
+              {copiedEmail ? (
+                <>
+                  <Check className="h-3.5 w-3.5" />
+                  <span>복사 완료</span>
+                </>
+              ) : (
+                <>
+                  <Mail className="h-3.5 w-3.5" />
+                  <span>Contact Me</span>
+                </>
+              )}
+            </button>
+          </div>
+        </header>
+
+        {/* 메인 캔버스 콘텐츠 */}
+        <div className="p-6 sm:p-9">
+          
+          {/* 히어로 영역: 이름 & 직함 & 태그 칩 */}
+          <section className="mb-8">
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <span className="rounded-full bg-[#E0F2FE] px-3 py-1 font-sans text-xs font-semibold text-[#0369A1]">
+                Frontend Developer
+              </span>
+              <span className="rounded-full bg-[#F1F0FE] px-3 py-1 font-sans text-xs font-semibold text-[#282582]">
+                UI / UX Focused
+              </span>
+              <span className="rounded-full bg-[#E1F5F2] px-3 py-1 font-sans text-xs font-semibold text-[#094943]">
+                Web Workspace
+              </span>
+            </div>
+
+            <div className="flex items-baseline gap-3">
+              <h1 className="font-sans text-3xl font-medium tracking-tight text-[#050038] sm:text-4xl">
+                이지윤
+              </h1>
+              <span className="font-sans text-lg font-normal text-zinc-400">
                 Jiyoon Lee
               </span>
-            </h1>
-
-            {/* 역할 뱃지 */}
-            <div className="mt-2.5 flex items-center justify-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-300 backdrop-blur-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
-                Frontend / Web Developer
-              </span>
             </div>
 
-            {/* 소개글 */}
-            <p className="mx-auto mt-3.5 max-w-xs break-keep text-sm leading-relaxed text-zinc-300/90">
-              사용자의 일상에 가치를 더하는 웹을 만듭니다. 직관적인 인터랙션과 완성도 높은 UX, 깔끔한 코드를 지향합니다.
+            <p className="mt-2.5 max-w-lg font-sans text-base leading-relaxed text-zinc-600">
+              사용자의 일상에 자연스럽게 스며드는 인터랙션과 완성도 높은 UX를 설계합니다. 복잡한 문제를 직관적인 비주얼 컴포넌트로 풀어내는 것을 즐깁니다.
             </p>
+          </section>
 
-            {/* 상태 알림 칩 */}
-            <div className="mt-3 flex justify-center">
-              <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400/90">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+          {/* 파스텔 스티키 노트 피처 카드 그리드 (28px 라운드) */}
+          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            
+            {/* 1. Soft Peach Sticky Card: 바이오 & 핵심 역량 */}
+            <div className="group relative flex flex-col justify-between rounded-[28px] bg-[#FFF2EB] p-6 text-[#7A3619] transition-all hover:shadow-[0px_4px_12px_0px_rgba(5,0,56,0.06)]">
+              <div>
+                <div className="flex items-center justify-between pb-3">
+                  <span className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#7A3619]">
+                    Sticky Note
+                  </span>
+                  <StickyNote className="h-4 w-4 text-[#7A3619]/70" />
+                </div>
+                <h2 className="font-sans text-lg font-medium tracking-tight text-[#5C230C]">
+                  가치 있는 웹 경험 설계
+                </h2>
+                <p className="mt-2 font-sans text-xs leading-relaxed text-[#7A3619]/90">
+                  단순한 화면 구현을 넘어, 사용자가 머무는 매 순간이 편리하고 직관적이도록 마이크로 인터랙션과 성능 최적화에 집중합니다.
+                </p>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-[#7A3619]/15 flex items-center justify-between text-xs font-medium">
+                <span>Seoul, KR</span>
+                <span className="text-[11px]">✦ Ready for Coffee Chat</span>
+              </div>
+            </div>
+
+            {/* 2. Teal Sticky Card: GitHub */}
+            <a
+              href="https://github.com/ounxxr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col justify-between rounded-[28px] bg-[#E1F5F2] p-6 text-[#094943] transition-all hover:shadow-[0px_4px_12px_0px_rgba(5,0,56,0.06)]"
+            >
+              <div>
+                <div className="flex items-center justify-between pb-3">
+                  <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#094943]">
+                    Code Repository
+                  </span>
+                  <GithubIcon className="h-5 w-5 text-[#094943]" />
+                </div>
+                <h2 className="font-sans text-lg font-medium tracking-tight text-[#06332f]">
+                  GitHub @ounxxr
+                </h2>
+                <p className="mt-2 font-sans text-xs leading-relaxed text-[#094943]/85">
+                  컴포넌트 주도 개발, 오픈소스 프로젝트 및 일일 잔디를 관리하는 개발자 공간입니다.
+                </p>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#094943]/15">
+                <span className="font-sans text-xs font-medium">github.com/ounxxr</span>
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/80 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  <ArrowUpRight className="h-4 w-4 text-[#094943]" />
                 </span>
-                열린 기회 & 커피챗 환영
+              </div>
+            </a>
+
+            {/* 3. Coral Sticky Card: Tech Blog */}
+            <a
+              href="https://velog.io/@ounxxr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col justify-between rounded-[28px] bg-[#FFEAE4] p-6 text-[#632314] transition-all hover:shadow-[0px_4px_12px_0px_rgba(5,0,56,0.06)]"
+            >
+              <div>
+                <div className="flex items-center justify-between pb-3">
+                  <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#632314]">
+                    Writing & Notes
+                  </span>
+                  <BookOpen className="h-4 w-4 text-[#632314]" />
+                </div>
+                <h2 className="font-sans text-lg font-medium tracking-tight text-[#45140b]">
+                  기술 블로그 (Velog)
+                </h2>
+                <p className="mt-2 font-sans text-xs leading-relaxed text-[#632314]/85">
+                  새로운 기술 탐구, 트러블슈팅 과정과 사용자 경험에 대한 고민을 글로 기록합니다.
+                </p>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between pt-3 border-t border-[#632314]/15">
+                <span className="font-sans text-xs font-medium">velog.io/@ounxxr</span>
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/80 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  <ArrowUpRight className="h-4 w-4 text-[#632314]" />
+                </span>
+              </div>
+            </a>
+
+            {/* 4. Lavender / Featured Card: Contact & Email */}
+            <div className="relative flex flex-col justify-between rounded-[28px] bg-[#F1F0FE] p-6 text-[#282582] border-2 border-[#4262FF]/20 shadow-[0px_4px_12px_0px_rgba(5,0,56,0.06)]">
+              <div>
+                <div className="flex items-center justify-between pb-3">
+                  <span className="rounded-full bg-[#4262FF] px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-white">
+                    Featured
+                  </span>
+                  <Sparkles className="h-4 w-4 text-[#4262FF]" />
+                </div>
+                <h2 className="font-sans text-lg font-medium tracking-tight text-[#1c1a63]">
+                  협업 & 커피챗 제안
+                </h2>
+                <p className="mt-2 font-sans text-xs leading-relaxed text-[#282582]/85">
+                  언제든 가벼운 이야기나 새로운 프로젝트 제안을 환영합니다. 클릭 한 번으로 연락해 보세요.
+                </p>
+              </div>
+
+              <div className="mt-5">
+                <button
+                  onClick={handleCopyEmail}
+                  className="flex w-full items-center justify-between rounded-full bg-[#050038] px-4 py-2.5 text-xs font-medium text-white transition-all hover:bg-zinc-800 active:scale-98"
+                >
+                  <span className="font-mono">{emailAddress}</span>
+                  <span className="flex items-center gap-1 text-[11px] text-zinc-300">
+                    {copiedEmail ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-400" />
+                        <span className="text-emerald-400">복사됨!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" />
+                        <span>복사</span>
+                      </>
+                    )}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+          </section>
+
+          {/* 기술 스택 섹션 */}
+          <section className="mt-8 rounded-2xl border border-zinc-100 bg-[#FAFAFC] p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-sans text-xs font-semibold text-zinc-700 uppercase tracking-wider">
+                Tech Stack & Tools
+              </span>
+              <span className="font-sans text-[11px] text-zinc-400">
+                Core Capabilities
               </span>
             </div>
-          </div>
 
-          {/* 구분선 */}
-          <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-          {/* 링크 카드 모음 */}
-          <div className="flex flex-col gap-3">
-            {links.map((link) => {
-              if (link.isCopyAction) {
-                return (
-                  <button
-                    key={link.id}
-                    onClick={handleCopyEmail}
-                    className="group relative flex w-full items-center justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-3.5 text-left backdrop-blur-md transition-all duration-300 hover:border-indigo-500/40 hover:bg-white/[0.08] hover:shadow-lg hover:shadow-indigo-500/10 active:scale-[0.98]"
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-900/80 transition-transform duration-300 group-hover:scale-105">
-                        {link.icon}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-white">
-                            {link.title}
-                          </span>
-                          {link.badge && (
-                            <span className="rounded-md border border-indigo-500/20 bg-indigo-500/10 px-1.5 py-0.5 text-[10px] font-medium text-indigo-300">
-                              {link.badge}
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-0.5 text-xs text-zinc-400">
-                          {link.subtitle}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center pl-2 text-zinc-400 transition-colors group-hover:text-white">
-                      {copiedEmail ? (
-                        <div className="flex items-center gap-1 text-xs font-medium text-emerald-400">
-                          <Check className="h-4 w-4" />
-                          <span>복사완료</span>
-                        </div>
-                      ) : (
-                        <Copy className="h-4 w-4 text-zinc-400 transition-transform group-hover:scale-110" />
-                      )}
-                    </div>
-                  </button>
-                );
-              }
-
-              return (
-                <a
-                  key={link.id}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative flex w-full items-center justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-3.5 text-left backdrop-blur-md transition-all duration-300 hover:border-indigo-500/40 hover:bg-white/[0.08] hover:shadow-lg hover:shadow-indigo-500/10 active:scale-[0.98]"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-900/80 transition-transform duration-300 group-hover:scale-105">
-                      {link.icon}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-white">
-                          {link.title}
-                        </span>
-                        {link.badge && (
-                          <span className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-zinc-300">
-                            {link.badge}
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-0.5 text-xs text-zinc-400">
-                        {link.subtitle}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center pl-2 text-zinc-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-white">
-                    <ExternalLink className="h-4 w-4" />
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-
-          {/* 기술 스택 영역 */}
-          <div className="mt-7">
-            <h2 className="mb-3 text-center text-xs font-semibold uppercase tracking-wider text-zinc-400">
-              Tech Stack & Focus
-            </h2>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap gap-2">
               {techStack.map((tech) => (
-                <span
+                <div
                   key={tech.name}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-zinc-300 backdrop-blur-sm transition-all duration-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200/80 bg-white px-3.5 py-1.5 font-sans text-xs font-medium text-[#050038] shadow-[0px_1px_2px_0px_rgba(5,0,56,0.04)] transition-all hover:border-zinc-300 hover:bg-zinc-50"
                 >
                   {tech.icon}
-                  {tech.name}
-                </span>
+                  <span>{tech.name}</span>
+                </div>
               ))}
+            </div>
+          </section>
+
+          {/* 미니 화이트보드 툴바 데코레이션 */}
+          <div className="mt-7 flex justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1.5 shadow-[0px_4px_12px_0px_rgba(5,0,56,0.06)]">
+              <button
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-100 text-[#050038]"
+                title="Select"
+                type="button"
+              >
+                <MousePointer2 className="h-3.5 w-3.5" />
+              </button>
+              <button
+                className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"
+                title="Sticky Note"
+                type="button"
+              >
+                <StickyNote className="h-3.5 w-3.5" />
+              </button>
+              <button
+                className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"
+                title="Shapes"
+                type="button"
+              >
+                <Square className="h-3.5 w-3.5" />
+              </button>
+              <button
+                className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"
+                title="Text"
+                type="button"
+              >
+                <Type className="h-3.5 w-3.5" />
+              </button>
+              <button
+                className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"
+                title="Pen"
+                type="button"
+              >
+                <PenTool className="h-3.5 w-3.5" />
+              </button>
             </div>
           </div>
 
-          {/* 키워드 태그 */}
-          <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-            <span className="text-[11px] text-zinc-500">#프론트엔드</span>
-            <span className="text-[11px] text-zinc-500">•</span>
-            <span className="text-[11px] text-zinc-500">#UI_UX</span>
-            <span className="text-[11px] text-zinc-500">•</span>
-            <span className="text-[11px] text-zinc-500">#지속적인성장</span>
-            <span className="text-[11px] text-zinc-500">•</span>
-            <span className="text-[11px] text-zinc-500">#모던웹</span>
-          </div>
-
-          {/* 푸터 카피라이트 */}
-          <div className="mt-8 border-t border-white/5 pt-4 text-center">
-            <p className="text-[11px] text-zinc-500">
+          {/* 푸터 영역 */}
+          <footer className="mt-8 border-t border-zinc-100 pt-4 text-center">
+            <p className="font-sans text-[11px] text-zinc-400">
               © {new Date().getFullYear()} 이지윤. All rights reserved.
             </p>
-          </div>
+          </footer>
+
         </div>
       </main>
     </div>

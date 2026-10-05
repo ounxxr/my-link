@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #f4f4f5;
+  --background: #ffffff;
+  --foreground: #050038;
 }
 
 @theme inline {
@@ -10,13 +10,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090b;
-    --foreground: #f4f4f5;
-  }
 }
 
 body {
@@ -27,34 +20,8 @@ body {
   min-height: 100vh;
 }
 
-@keyframes float-slow {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -40px) scale(1.08);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.95);
-  }
-}
-
-@keyframes float-reverse {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(-30px, 30px) scale(1.05);
-  }
-  66% {
-    transform: translate(25px, -25px) scale(0.96);
-  }
-}
-
-.animate-float-slow {
-  animation: float-slow 14s ease-in-out infinite;
-}
-
-.animate-float-reverse {
-  animation: float-reverse 16s ease-in-out infinite;
+/* Miro Canvas Dot Grid */
+.miro-canvas-grid {
+  background-image: radial-gradient(rgba(5, 0, 56, 0.08) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
 }
