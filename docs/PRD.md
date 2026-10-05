@@ -1,9 +1,9 @@
 # [PRD] 링크트리 클론 서비스: 마이링크 (MyLink)
 
-> **문서 버전:** v1.2.0 (사용자 시나리오 추가 및 단계별 시연용 개정판)  
+> **문서 버전:** v1.4.1 (더미 데이터 JSON 및 백엔드 Mock API 규격 반영 개정판)  
 > **작성일:** 2026-10-05  
 > **진행 단계:** **Step 1 (현재 진행)** - LocalStorage 기반 단일 프로필 페이지 구현  
-> **기반 기술:** Next.js (App Router), React 19, TypeScript, Tailwind CSS, Zustand, LocalStorage  
+> **기반 기술:** Next.js (App Router), React 19, TypeScript, Tailwind CSS v4, shadcn/ui (Base UI 기반), Zustand, LocalStorage  
 
 ---
 
@@ -14,6 +14,39 @@
 - **현재 시연(Demo) 목적에 맞추어 점진적·단계별(Phased) 개발을 진행함.**
 - **[Step 1 - 현재]**: 대시보드나 통계 기능은 구현하지 않고, **LocalStorage를 활용하여 브라우저에서 동적으로 데이터를 읽어와 렌더링하는 완성도 높은 "프로필 페이지"**를 우선 완성함.
 - **[Step 2 & 3 - 향후]**: 프로필 페이지가 완성된 이후, 관리자 대시보드(편집기, 프리뷰) 및 방문자 분석/통계 기능을 순차적으로 확장함.
+
+### 1.2 디자인 시스템 원칙: shadcn/ui × Miro Design System (`design.md` 준수)
+본 프로젝트의 모든 UI/UX는 **공식 `shadcn/ui`의 견고한 컴포넌트 아키텍처(WAI-ARIA 웹 접근성, Headless 프리미티브, Tailwind CSS v4 CSS-first 토큰)**를 토대로 하되, 시각적 스타일링과 인터페이스 언어는 [`design.md`](file:///c:/Users/jiyoo/projects/my-link-hy/mylink/design.md)의 **Miro Design System**을 1:1로 정확하게 반영하여 구축한다.
+
+1. **캔버스 & 서피스 (Canvas & Surface)**:
+   - **스타크 화이트 캔버스**: 순수 화이트(`canvas`: `#ffffff`) 배경과 은은한 도트 격자(`miro-canvas-grid`, `radial-gradient(rgba(5, 0, 56, 0.08) 1.2px, transparent 1.2px)`)로 시각적 작업공간 느낌 연출.
+   - **정교한 엘리베이션(Depth)**: 1px 헤어라인 테두리(`hairline-soft`: `#05003810`)와 Level 2 카드 그림자(`rgba(5, 0, 56, 0.06) 0px 4px 12px 0px`)를 기본으로 적용.
+2. **시그니처 컬러 팔레트 (Color Tokens)**:
+   - **Deep Ink (`#050038`)**: 주 텍스트 및 대표 Primary CTA 버튼의 핵심 색상.
+   - **Miro Yellow (`#FFD02F`)**: 워드마크, 프로모 뱃지, 태그 칩 등 브랜드 시그니처 강조에만 사용 (※ 메인 CTA 배경으로는 절대 사용 금지).
+   - **Sticky-Note Pastel Palette**: 실제 화이트보드 포스트잇 색상을 계승한 파스텔 틴트(Yellow `#FFF1B8`, Coral `#FFD7CC`, Teal `#CCF3EE`, Rose `#FFE0EB`)를 서브 카드 및 카테고리 태그 칩에 배치.
+3. **타이포그래피 위계 (Typography)**:
+   - Roobert PRO / Geist Sans를 기본으로 하며, 500(Medium) 가중치를 주축으로 디스플레이 헤딩에는 타이트한 행간(Tight Leading 1.05~1.15)과 음수 자간(-1px ~ -2px)을 적용.
+4. **쉐입 및 라운딩 (Shapes & Radius)**:
+   - **Pill 형태 (`rounded-full`)**: 모든 버튼(Primary, Secondary, Ghost, Icon), 태그 칩, 세그먼트 탭은 필(Pill) 형태로 통일.
+   - **카드 라운딩**: 표준 카드는 `rounded-2xl` (16px), 메인 프로필 및 피처 카드는 `rounded-3xl` (28px) 코너 라운딩 적용.
+5. **shadcn/ui 컴포넌트별 Miro 스타일 매핑 명세**:
+   - **`Button` (`src/components/ui/button.tsx`)**:
+     - `default`: Black-Pill CTA (`bg-[#050038] text-white rounded-full hover:bg-black/85`)
+     - `secondary` / `outline`: Outlined Pill (`border border-[#050038]/20 text-[#050038] rounded-full hover:bg-[#050038]/5`)
+     - `yellow`: Brand Yellow Pill (`bg-[#FFD02F] text-[#050038] font-medium rounded-full`)
+     - `ghost` / `icon`: 원형 유틸리티 버튼 (`size-9 rounded-full border border-hairline hover:bg-muted`)
+   - **`Card` (`src/components/ui/card.tsx`)**:
+     - `card-base`: Miro 보드 타일/화이트 서피스 (`rounded-3xl`, 1px 헤어라인, Level 2 depth).
+     - `card-pastel`: 스티키 노트 팔레트(Rose, Teal, Coral, Yellow) 배경 카드 variant 지원.
+   - **`Badge` (`src/components/ui/badge.tsx`)**:
+     - Miro 스타일 태그 칩 (`rounded-full`, 파스텔 배경 + 고대비 다크 텍스트).
+   - **`Avatar` (`src/components/ui/avatar.tsx`)**:
+     - Miro 협업자 아바타 스타일의 정교한 2px 헤어라인 서클.
+   - **`Separator` (`src/components/ui/separator.tsx`)**:
+     - Miro `hairline-soft` (0.5~1px의 연한 그레이 디바이더).
+   - **`Toast` (Sonner)**:
+     - Miro 모달 깊이감(Level 4)과 헤어라인 보더의 심플한 알림 토스트.
 
 ---
 
@@ -76,57 +109,82 @@
 
 ## 4. [Step 1] 기능별 상세 요구사항 (Functional Requirements)
 
-### 4.1 데이터 모델 및 LocalStorage 연동
-- **FR-01 (초기 Seed 데이터 자동 로드)**:
-  - 사용자가 처음 접속했을 때 `localStorage`에 데이터가 없으면, 기존 이지윤 님(Frontend Developer)의 샘플 프로필 및 링크 데이터를 기본값으로 자동 주입.
-  - 브라우저를 새로고침하거나 닫았다 열어도 LocalStorage 데이터를 지속 유지.
+### 4.1 데이터 모델 및 LocalStorage / Mock API 연동
+- **FR-01 (초기 Seed 데이터 및 Mock API 연동)**:
+  - **기본 더미 데이터 소스**: 프로젝트 내 [`src/data/mockLinks.json`](file:///c:/Users/jiyoo/projects/my-link-hy/mylink/src/data/mockLinks.json) 파일을 정식 시드 및 더미 데이터셋으로 채택.
+  - 사용자가 처음 접속했을 때 `localStorage`에 데이터가 없으면, `mockLinks.json`에 정의된 이지윤 님(Frontend Developer)의 프로필, 소셜 링크, 카테고리, 링크 블록 데이터를 기본값(Seed)으로 자동 주입.
+  - 브라우저를 새로고침하거나 닫았다 열어도 LocalStorage 데이터를 지속 유지 (`mylink_profile_data`).
+  - **백엔드 Mock API 엔드포인트 연동**: Next.js App Router API Route([`src/app/api/links/route.ts`](file:///c:/Users/jiyoo/projects/my-link-hy/mylink/src/app/api/links/route.ts))를 구비하여 `GET /api/links` (카테고리/검색/활성여부 쿼리 필터링 지원) 및 `POST /api/links`를 통한 백엔드 통신 시뮬레이션 지원.
 - **FR-02 (Zustand 스토어 구성)**:
   - Zustand의 `persist` 미들웨어를 사용하여 `mylink_profile_data` 키로 상태 관리.
   - 프로필 정보, SNS 링크, 블록(링크/헤더) 목록을 스토어에서 중앙 집중식으로 읽어와 컴포넌트에 공급.
 
-### 4.2 프로필 페이지 레이아웃 & UI (Miro Canvas Style)
+### 4.2 프로필 페이지 레이아웃 & UI (Miro Canvas × shadcn/ui)
 - **FR-03 (반응형 캔버스 & 카드 컨테이너)**:
   - 모바일 퍼스트 기준 최적화(최대 너비 440px~480px의 중앙 집중형 카드 레이아웃).
-  - 기존 디자인 철학(Canvas Grid 배경, 화이트 카드 서피스, 헤어라인 보더, 정교한 섀도우) 계승.
+  - 전체 화면: Stark White 바탕에 Miro 캔버스 도트 그리드(`miro-canvas-grid`) 배경 적용.
+  - 프로필 컨테이너: shadcn/ui `Card`를 확장하여 `rounded-3xl` (28px), 1px 헤어라인 보더(`hairline-soft`), 미세한 소프트 섀도우(Level 2: `rgba(5, 0, 56, 0.06) 0px 4px 12px 0px`)를 적용한 화이트 서피스.
 - **FR-04 (프로필 헤더 영역)**:
-  - **아바타 이미지**: 둥근 원형 프로필 사진 및 테두리.
-  - **이름(Display Name)**: 가독성 높은 폰트의 볼드 타이틀.
-  - **한 줄 소개(Bio)**: 서브 텍스트로 자연스러운 자기소개 표시.
+  - **아바타 이미지**: shadcn/ui `Avatar` 컴포넌트 활용, 원형 서클(`rounded-full`)에 2px 헤어라인 테두리 및 미세 섀도우 적용.
+  - **이름(Display Name)**: Roobert/Geist 500-weight의 볼드 타이틀 (Ink 컬러 `#050038`, 음수 자간 `-0.5px` 적용).
+  - **한 줄 소개(Bio)**: Slate/Charcoal 텍스트로 자연스러운 자기소개 표시.
 - **FR-05 (SNS 아이콘 바)**:
-  - 깃허브, 인스타그램, 링크드인, 이메일 등 등록된 활성 SNS 아이콘을 가로 일렬로 배치.
+  - 깃허브, 인스타그램, 링크드인, 이메일 등 등록된 활성 SNS 아이콘을 Miro 원형 유틸리티 버튼 규격(`button-icon-circular`: shadcn/ui `Button` `variant: ghost, size: icon`, 36×36px, `rounded-full`, 1px 헤어라인 테두리)으로 가로 일렬 배치.
   - 클릭 시 해당 소셜 프로필 새 탭 열기.
 - **FR-06 (링크 버튼 목록 & 섹션 헤더)**:
   - **웹 링크 버튼**:
-    - 버튼 타이틀 + 클릭 시 새 창(`target="_blank"`)으로 URL 이동.
-    - 호버 및 액티브 인터랙션(부드러운 스케일/음영 효과).
+    - shadcn/ui `Button`을 확장한 Miro 스타일 링크 카드 버튼:
+      - **기본 링크 버튼**: Black-Pill 또는 클린 화이트 서피스 카드형 버튼(헤어라인 보더, 미세 호버 엘리베이션, 텍스트 타이틀 + 아이콘 배치).
+      - **강조/피처 링크 버튼**: Miro 스티키 노트 팔레트(Yellow `#FFF1B8`, Coral `#FFD7CC`, Teal `#CCF3EE`, Rose `#FFE0EB`) 배경 틴트를 적용한 파스텔 카드형 버튼.
+    - 호버 및 액티브 인터랙션(Miro 특유의 부드러운 스케일/음영 효과).
     - `isActive: true` 상태인 링크만 필터링하여 화면에 노출.
   - **섹션 구분 헤더**:
-    - 링크 그룹 간 구분을 위한 텍스트 헤더/디바이더 렌더링.
+    - Miro 타이포그래피 규칙(`micro-uppercase`: 11px, 600 weight, 0.5px letter-spacing, uppercase)을 적용한 텍스트 라벨 및 shadcn/ui `Separator` (`hairline-soft`) 렌더링.
 - **FR-07 (공유 & 편의 기능)**:
-  - 프로필 상단 우측 또는 하단에 'URL 복사' 버튼 제공.
-  - 클릭 시 현재 URL 클립보드 복사 및 Toast 알림 표시.
+  - 프로필 상단 우측에 Miro 원형 유틸리티 버튼(`button-icon-circular`) 형태의 'URL 복사' 버튼(shadcn/ui `Tooltip` 연동) 제공.
+  - 클릭 시 현재 URL 클립보드 복사 및 shadcn/ui `Sonner` 기반의 깔끔한 Miro 모달 뎁스(Level 4) 알림 Toast 표시.
 
 ---
 
-## 5. [Step 1] 데이터 구조 정의 (Data Model)
+## 5. [Step 1] 데이터 구조 정의 (Data Model & Mock API)
 
-`localStorage` 키: `mylink_profile_data`
+- **LocalStorage 키**: `mylink_profile_data`
+- **더미 데이터 파일**: [`src/data/mockLinks.json`](file:///c:/Users/jiyoo/projects/my-link-hy/mylink/src/data/mockLinks.json)
+- **TypeScript 타입 정의**: [`src/types/link.ts`](file:///c:/Users/jiyoo/projects/my-link-hy/mylink/src/types/link.ts)
+- **Mock API 엔드포인트**: `GET/POST /api/links` ([`src/app/api/links/route.ts`](file:///c:/Users/jiyoo/projects/my-link-hy/mylink/src/app/api/links/route.ts))
+
+### 5.1 TypeScript 모델 정의 (`src/types/link.ts`)
 
 ```typescript
+export type PlatformType = 'github' | 'instagram' | 'linkedin' | 'twitter' | 'youtube' | 'email' | 'web' | 'velog';
+
 export interface SocialLinkItem {
   id: string;
-  platform: 'github' | 'instagram' | 'linkedin' | 'twitter' | 'youtube' | 'email' | 'web';
+  platform: PlatformType;
+  name: string;
   url: string;
   isActive: boolean;
 }
+
+export type BlockType = 'link' | 'header';
+export type CardVariant = 'default' | 'featured' | 'pastel-peach' | 'pastel-teal' | 'pastel-coral' | 'pastel-lavender' | 'pastel-yellow';
 
 export interface LinkBlock {
   id: string;
   type: 'link';
   title: string;
+  subtitle?: string;
   url: string;
+  icon?: string;
+  category?: 'projects' | 'articles' | 'connect' | string;
+  variant?: CardVariant;
+  badge?: string;
   isActive: boolean;
-  clickCount?: number;
+  isPinned?: boolean;
+  clickCount: number;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface HeaderBlock {
@@ -134,22 +192,65 @@ export interface HeaderBlock {
   type: 'header';
   title: string;
   isActive: boolean;
+  order: number;
 }
 
 export type ContentBlock = LinkBlock | HeaderBlock;
 
+export interface UserProfile {
+  username: string;
+  displayName: string;
+  headline: string;
+  bio: string;
+  avatarUrl: string;
+  statusBadge?: string;
+  email: string;
+  location?: string;
+}
+
 export interface MyLinkProfileState {
-  user: {
-    username: string;       // e.g. "jiyoon"
-    displayName: string;    // e.g. "이지윤"
-    bio: string;            // e.g. "사용자의 일상에 가치를 더하는 프론트엔드 개발자"
-    avatarUrl: string;      // 프로필 이미지 경로
-  };
+  user: UserProfile;
   socialLinks: {
     position: 'top' | 'bottom';
     items: SocialLinkItem[];
   };
+  categories?: { id: string; label: string; icon: string }[];
   blocks: ContentBlock[];
+}
+
+export interface ApiResponse<T> {
+  statusCode: number;
+  message: string;
+  data: T;
+  meta?: {
+    totalItems?: number;
+    totalPages?: number;
+    currentPage?: number;
+    pageSize?: number;
+  };
+  timestamp: string;
+}
+```
+
+### 5.2 Mock API Envelope 규격 (`GET /api/links`)
+
+```json
+{
+  "statusCode": 200,
+  "message": "링크 목록을 성공적으로 조회했습니다.",
+  "data": {
+    "user": { ... },
+    "socialLinks": { ... },
+    "categories": [ ... ],
+    "blocks": [ ... ]
+  },
+  "meta": {
+    "totalItems": 11,
+    "totalPages": 1,
+    "currentPage": 1,
+    "pageSize": 11
+  },
+  "timestamp": "2026-10-05T08:52:43.000Z"
 }
 ```
 
@@ -163,8 +264,11 @@ export interface MyLinkProfileState {
 2. **성능 & 번들 최적화**:
    - 불필요한 라이브러리 없이 경량 Zustand 훅만으로 상태 바인딩.
    - 첫 페인트(FCP) 지연 없는 빠른 초기 로딩.
-3. **디자인 일관성**:
-   - 기존 `design.md` 및 `ProfileCard.tsx`에서 정의된 세련된 색상, 폰트(Roobert/Geist/Pretendard), 여백 시스템 엄격 준수.
+3. **Miro 디자인 시스템 일관성 & 웹 접근성 (Design System & Accessibility)**:
+   - 모든 신규 UI 및 인터랙션 요소는 **shadcn/ui 아키텍처 위에 `design.md`의 Miro Design System 규격**을 100% 반영하여 구현.
+   - Miro 고유의 색상 팔레트(Deep Ink `#050038`, Canary Yellow `#FFD02F`, Sticky-Note Pastels) 및 타이트한 디스플레이 타이포그래피, Pill 쉐입(`rounded-full`), 정교한 엘리베이션(Level 0~4) 엄격 준수.
+   - WAI-ARIA 웹 접근성 가이드라인을 준수하며, 키보드 네비게이션 및 포커스 링(`focus-visible:ring-ring`)을 기본 지원.
+   - Tailwind CSS v4 CSS-first 환경에 맞추어 `src/app/globals.css`의 CSS 변수 토큰을 통해 디자인 시스템을 유기적으로 확장.
 
 ---
 

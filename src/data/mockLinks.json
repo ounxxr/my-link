@@ -1,0 +1,223 @@
+{
+  "user": {
+    "username": "jiyoon",
+    "displayName": "이지윤",
+    "headline": "Frontend Developer & UI/UX Specialist",
+    "bio": "사용자의 일상에 가치를 더하는 인터랙티브 웹을 만듭니다. 직관적인 사용자 경험과 완성도 높은 컴포넌트 설계를 지향합니다 🚀",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "statusBadge": "🟢 Available for Work",
+    "email": "ounxxr@gmail.com",
+    "location": "Seoul, South Korea"
+  },
+  "socialLinks": {
+    "position": "top",
+    "items": [
+      {
+        "id": "social-1",
+        "platform": "github",
+        "name": "GitHub",
+        "url": "https://github.com/ounxxr",
+        "isActive": true
+      },
+      {
+        "id": "social-2",
+        "platform": "velog",
+        "name": "Velog",
+        "url": "https://velog.io/@ounxxr",
+        "isActive": true
+      },
+      {
+        "id": "social-3",
+        "platform": "linkedin",
+        "name": "LinkedIn",
+        "url": "https://linkedin.com/in/ounxxr",
+        "isActive": true
+      },
+      {
+        "id": "social-4",
+        "platform": "twitter",
+        "name": "X (Twitter)",
+        "url": "https://x.com/ounxxr",
+        "isActive": true
+      },
+      {
+        "id": "social-5",
+        "platform": "email",
+        "name": "Email",
+        "url": "mailto:ounxxr@gmail.com",
+        "isActive": true
+      }
+    ]
+  },
+  "categories": [
+    { "id": "all", "label": "전체", "icon": "Sparkles" },
+    { "id": "projects", "label": "프로젝트", "icon": "Layers" },
+    { "id": "articles", "label": "아티클", "icon": "BookOpen" },
+    { "id": "connect", "label": "문의/협업", "icon": "Mail" }
+  ],
+  "blocks": [
+    {
+      "id": "header-1",
+      "type": "header",
+      "title": "FEATURED PROJECTS",
+      "isActive": true,
+      "order": 1
+    },
+    {
+      "id": "link-1",
+      "type": "link",
+      "title": "Miro Design System Showcase",
+      "subtitle": "Miro 테마 디자인 토큰 및 WAI-ARIA 기반 인터랙티브 UI 컴포넌트 라이브러리",
+      "url": "https://github.com/ounxxr/miro-design-system",
+      "icon": "Palette",
+      "category": "projects",
+      "variant": "pastel-peach",
+      "badge": "NEW",
+      "isActive": true,
+      "isPinned": true,
+      "clickCount": 1420,
+      "order": 2,
+      "createdAt": "2026-09-15T09:00:00.000Z",
+      "updatedAt": "2026-10-04T14:20:00.000Z"
+    },
+    {
+      "id": "link-2",
+      "type": "link",
+      "title": "MyLink - Link in Bio SaaS",
+      "subtitle": "Next.js 16 + React 19 + Tailwind v4 기반의 초경량 링크 관리 솔루션",
+      "url": "https://mylink.dev/@jiyoon",
+      "icon": "Layers",
+      "category": "projects",
+      "variant": "pastel-teal",
+      "badge": "HOT",
+      "isActive": true,
+      "isPinned": true,
+      "clickCount": 2180,
+      "order": 3,
+      "createdAt": "2026-09-20T11:30:00.000Z",
+      "updatedAt": "2026-10-05T08:15:00.000Z"
+    },
+    {
+      "id": "link-3",
+      "type": "link",
+      "title": "CodeCanvas - 실시간 협업 화이트보드",
+      "subtitle": "WebSocket 및 CRDT 기반 실시간 다중 사용자 벡터 캔버스 드로잉 웹 앱",
+      "url": "https://codecanvas.workspace.dev",
+      "icon": "Code2",
+      "category": "projects",
+      "variant": "default",
+      "badge": "",
+      "isActive": true,
+      "isPinned": false,
+      "clickCount": 890,
+      "order": 4,
+      "createdAt": "2026-08-10T14:00:00.000Z",
+      "updatedAt": "2026-09-28T17:40:00.000Z"
+    },
+    {
+      "id": "header-2",
+      "type": "header",
+      "title": "ARTICLES & INSIGHTS",
+      "isActive": true,
+      "order": 5
+    },
+    {
+      "id": "link-4",
+      "type": "link",
+      "title": "React 19 마이그레이션 및 실전 적용기",
+      "subtitle": "Server Actions, useActionState, useOptimistic 실무 패턴 집중 분석",
+      "url": "https://velog.io/@ounxxr/react-19-migration-guide",
+      "icon": "BookOpen",
+      "category": "articles",
+      "variant": "pastel-coral",
+      "badge": "BEST",
+      "isActive": true,
+      "isPinned": false,
+      "clickCount": 3410,
+      "order": 6,
+      "createdAt": "2026-09-01T10:15:00.000Z",
+      "updatedAt": "2026-10-02T16:00:00.000Z"
+    },
+    {
+      "id": "link-5",
+      "type": "link",
+      "title": "Tailwind CSS v4 CSS-First 아키텍처 완벽 해부",
+      "subtitle": "새로운 @theme 디렉티브와 빌드 타임 성능 300% 개선 실전기",
+      "url": "https://velog.io/@ounxxr/tailwind-v4-deep-dive",
+      "icon": "Terminal",
+      "category": "articles",
+      "variant": "default",
+      "badge": "",
+      "isActive": true,
+      "isPinned": false,
+      "clickCount": 1650,
+      "order": 7,
+      "createdAt": "2026-09-18T13:45:00.000Z",
+      "updatedAt": "2026-09-30T11:20:00.000Z"
+    },
+    {
+      "id": "link-6",
+      "type": "link",
+      "title": "Core Web Vitals 성능 최적화 체크리스트",
+      "subtitle": "INP(Interaction to Next Paint)와 LCP 지표를 단축하는 프론트엔드 최적화 기법",
+      "url": "https://velog.io/@ounxxr/core-web-vitals-optimization",
+      "icon": "Sparkles",
+      "category": "articles",
+      "variant": "default",
+      "badge": "",
+      "isActive": true,
+      "isPinned": false,
+      "clickCount": 920,
+      "order": 8,
+      "createdAt": "2026-08-25T08:20:00.000Z",
+      "updatedAt": "2026-09-12T19:10:00.000Z"
+    },
+    {
+      "id": "header-3",
+      "type": "header",
+      "title": "CONNECT & WORK",
+      "isActive": true,
+      "order": 9
+    },
+    {
+      "id": "link-7",
+      "type": "link",
+      "title": "1:1 커피챗 & 멘토링 신청 (Coffee Chat)",
+      "subtitle": "프론트엔드 커리어, 포트폴리오 피드백, 개발 이야기 편하게 나눠요 ☕",
+      "url": "https://calendly.com/ounxxr/coffee-chat",
+      "icon": "Coffee",
+      "category": "connect",
+      "variant": "pastel-lavender",
+      "badge": "SCHEDULE",
+      "isActive": true,
+      "isPinned": false,
+      "clickCount": 430,
+      "order": 10,
+      "createdAt": "2026-07-01T09:00:00.000Z",
+      "updatedAt": "2026-10-01T10:00:00.000Z"
+    },
+    {
+      "id": "link-8",
+      "type": "link",
+      "title": "채용 제안 및 프로젝트 협업 문의",
+      "subtitle": "사이드 프로젝트, 프리랜스 외주, 정규직 포지션 제안 및 이력서 요청",
+      "url": "mailto:ounxxr@gmail.com?subject=[MyLink%20문의]%20협업%20제안드립니다",
+      "icon": "Mail",
+      "category": "connect",
+      "variant": "featured",
+      "badge": "CONTACT",
+      "isActive": true,
+      "isPinned": false,
+      "clickCount": 510,
+      "order": 11,
+      "createdAt": "2026-07-01T09:00:00.000Z",
+      "updatedAt": "2026-10-03T15:30:00.000Z"
+    }
+  ],
+  "statistics": {
+    "totalViews": 14520,
+    "totalClicks": 11400,
+    "averageCtr": "78.5%",
+    "topPerformingLink": "link-4"
+  }
+}
